@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link id="icon" rel="icon" href="./item2table.svg" type="image/svg+xml">
+    <link rel="stylesheet" type="text/css" href="app.css">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Convert Item List to Table" />
+    <meta name="twitter:image" content="https://otahi.github.io/item2table/item2table.png">
+    <title>Convert Item List to Table</title>
+</head>
+
+<body onload="convertItemList()">
+    <h1 id="title"> Convert Item List to Table</h1>
+    <div id="navi">
+        <div><label for="items">Item List</label></div>
+        <div><textarea id="items" rows="20" cols="60" name="items" placeholder="- header level 1
+  - header level 2
+    - header level 3
+- item level 1
+  - item level 1 - 1
+    - item level 1 - 1 - 1
+    - item level 1 - 1 - 2
+  - item level 1 - 2
+    - item level 1 - 2 - 1
+  ">
+- header level 1
+  - header level 2
+    - header level 3
+- item level 1
+  - item level 1 - 1
+    - item level 1 - 1 - 1
+    - item level 1 - 1 - 2
+  - item level 1 - 2
+    - item level 1 - 2 - 1
+</textarea></div>
+        <div>
+            <button id="convert" onclick="convertItemList()">Convert to Table</button>
+            <button id="copy" onclick="copyTableToClipboard()">Copy Table to Clipboard</button>
+        </div>
+    </div>
+
+    <div id="container">
+        <table id="table">
+        </table>
+    </div>
+
+    <script src="./app.js"></script>
+</body>
+
+</html>

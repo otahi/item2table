@@ -1,0 +1,38 @@
+th,
+td {
+    border: solid 1px;
+    vertical-align: top;
+    padding: 5px 5px 5px 5px;
+}
+
+th {
+    font-weight: bold;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+p,
+ul,
+ol {
+    margin-bottom: 2em;
+    color: #1d1d1d;
+    font-family: sans-serif;
+}
+
+textarea {
+    font-size: 1.4em;
+}
+
+button {
+    font-weight: bold;
+    margin: 0 20px 20px 0;
+    padding: 5px;
+}
+
+#title {
+    text-indent: 64px;
+    text-align: left;
+    background: url(./item2table.svg) left top/48px auto no-repeat;
+}
