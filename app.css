@@ -1,3 +1,7 @@
+body {
+    font-family: "Helvetica Neue", "Helvetica", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Arial", "Yu Gothic", "Meiryo", sans-serif;
+}
+
 th,
 td {
     border: solid 1px;
@@ -18,7 +22,6 @@ ul,
 ol {
     margin-bottom: 2em;
     color: #1d1d1d;
-    font-family: sans-serif;
 }
 
 textarea {
@@ -33,7 +36,7 @@ button {
 
 #title {
     display: flex;
-    font-size: 1.6em;
+    font-size: 1.2em;
     vertical-align: middle;
     padding: 10px;
     text-indent: 64px;
