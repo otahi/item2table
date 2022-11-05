@@ -13,23 +13,29 @@ function copyTableToClipboard() {
     document.execCommand('copy')
 }
 
+function sanitize(str) {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
 function countIndent(line) {
     return line.length - line.replace(/^(\s+)[#-]/, "").length;
 }
 
 function textBody(line) {
-    return line.replace(/^(\s+)*[-#](\s)*/, "");
+    return sanitize(line).replace(/^(\s+)*[-#](\s)*/, "");
 }
 
 function createNodeList() {
     const text = document.getElementById('items').value;
     const lines = text.split('\n');
 
-    const nodes = { indent: -1, parent: null, children: [], row: 0, col: -1 };
+    const nodes = { indent: -1, parent: null, children: [], row: -1, col: -1, rows: 0, depth: 0 };
     let lastNode = null;
-    let lastIndent = -1;
-    let lastRow = 0;
-    let lastColumn = 0;
+    let lastIndent = 0;
+    let lastRow = -1;
+    let lastColumn = -1;
+    let maxRow = 0;
+    let maxDepth = 0;
 
     function findParentNode(lastNode, indent) {
         if (lastNode == null) {
@@ -50,8 +56,8 @@ function createNodeList() {
 
         const indent = countIndent(line);
         const parent = findParentNode(lastNode, indent);
-        const row = lastIndent >= indent ? parent.row + 1 : lastRow;
-        const col = lastIndent < indent ? lastColumn + 1 : parent.col + 1;
+        const row = lastIndent >= indent ? lastRow + 1 : lastRow;
+        const col = lastIndent >= indent ? parent.col + 1 : lastColumn + 1;
         const node = { body: textBody(line), indent: indent, parent: parent, children: [], row: row, col: col };
 
         parent.children.push(node);
@@ -60,7 +66,12 @@ function createNodeList() {
         lastRow = row;
         lastColumn = col;
         lastNode = node;
+        maxRow = maxRow > row ? maxRow : row;
+        maxDepth = maxDepth > col ? maxDepth : col;
     }
+
+    nodes.depth = maxDepth + 1;
+    nodes.rows = maxRow + 1;
 
     printNode(nodes);
 
@@ -111,39 +122,58 @@ function getDepth(nodeList) {
     return maxDepth + 1;
 }
 
+function fillChildren(cells, children) {
+    for (const node of children) {
+        cells[node.row][node.col] = node.body;
+        fillChildren(cells, node.children);
+    }
+}
+
+function getRowspan(row, col, cells) {
+    let span = 0;
+    for (let i = row + 1; i < cells.length; i++) {
+        if (cells[i][col]) {
+            break;
+        }
+        span++;
+    }
+
+    return span + 1;
+}
+
 function createTable(nodeList) {
-    const rowLength = getNumChildren(nodeList);
-    const columnLength = getDepth(nodeList);
+    const rowLength = nodeList.rows;
+    const columnLength = nodeList.depth;
 
-    let cells = new Array(rowLength);
-
-    for (let i = 0; i < columnLength; i++) {
+    const cells = new Array(rowLength);
+    for (let i = 0; i < rowLength; i++) {
         cells[i] = new Array(columnLength).fill(null);
     }
 
-    for (const node of nodeList.children) {
-        //TODO
-    }
-
-    for (let i = 0; i < rowLength; i++) {
-        for (let j = 0; j < columnLength; j++) {
-            //TODO
-            //            cells[i][j] = 
-        }
-    }
+    fillChildren(cells, nodeList.children);
 
     console.log(cells);
 
     let html = '<tbody><tr>';
-    for (let i = 0; i < getDepth(nodeList); i++) {
+    for (let i = 0; i < columnLength; i++) {
         html += `<th>Header Level ${i+1}</th>`;
     }
-    html += '</tr>';
-    for (const node of nodeList.children) {
-        const numChildren = getNumChildren(node);
-        html += `<tr><td rowspan=${numChildren-1}>${node.body}</td><td></td><td></td><td></td>`; //TODO
-        html += `</tr>`
+    html += '</tr><tr>';
+    for (let i = 0; i < rowLength; i++) {
+        for (let j = 0; j < columnLength; j++) {
+            const rowspan = getRowspan(i, j, cells);
+            console.log(rowspan, cells[i][j]);
+            if (rowspan > 1 && cells[i][j]) {
+                html += `<td rowspan="${rowspan}">${cells[i][j]}</td>`;
+            } else {
+                if (cells[i][j]) {
+                    html += `<td>${cells[i][j]}</td>`;
+                }
+            }
+        }
+        html += '</tr>';
     }
+
 
     html += '</tbody>';
     const table = document.getElementById('table');
