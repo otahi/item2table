@@ -49,7 +49,6 @@ function createNodeList() {
 
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
-        console.log(`line:${i}, ${line}`)
         if (line.length == 0) {
             continue; //skip empty lines
         }
@@ -72,8 +71,6 @@ function createNodeList() {
 
     nodes.depth = maxDepth + 1;
     nodes.rows = maxRow + 1;
-
-    printNode(nodes);
 
     return nodes;
 }
@@ -174,8 +171,6 @@ function createTable(nodeList) {
 
     fillChildren(cells, nodeList.children);
 
-    console.log(cells);
-
     let html = '<tbody><tr>';
     for (let i = 0; i < columnLength; i++) {
         html += `<th>Header Level ${i+1}</th>`;
@@ -185,7 +180,6 @@ function createTable(nodeList) {
         for (let j = 0; j < columnLength; j++) {
             const rowspan = getRowspan(i, j, cells);
             const colspan = getColspan(i, j, cells);
-            console.log(rowspan, colspan, cells[i][j]);
             if (rowspan > 1 && cells[i][j]) {
                 html += `<td rowspan="${rowspan}">${cells[i][j]}</td>`;
             } else if (colspan > 1 && cells[i][j]) {
@@ -204,8 +198,6 @@ function createTable(nodeList) {
     html += '</tbody>';
     const table = document.getElementById('table');
     table.innerHTML = html;
-
-    console.log(html);
 }
 
 function convertItemList() {
