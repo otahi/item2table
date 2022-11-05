@@ -16,25 +16,26 @@
     <h1 id="title"> Convert Item List to Table</h1>
     <div id="navi">
         <div><label for="items">Item List</label></div>
-        <div><textarea id="items" rows="20" cols="60" name="items" placeholder="- header level 1
-  - header level 2
-    - header level 3
-- item level 1
-  - item level 1 - 1
-    - item level 1 - 1 - 1
-    - item level 1 - 1 - 2
-  - item level 1 - 2
-    - item level 1 - 2 - 1
+        <div><textarea id="items" rows="20" cols="60" name="items" placeholder="- item 1
+  - item 1 - 1
+    - item 1 - 1 - 1
+    - item 1 - 1 - 2
+  - item 1 - 2
+    - item 1 - 2 - 1
+- item 2(no child)
+- item 3
+    - item 3 - 1(no child)
   ">
-- header level 1
-  - header level 2
-    - header level 3
-- item level 1
-  - item level 1 - 1
-    - item level 1 - 1 - 1
-    - item level 1 - 1 - 2
-  - item level 1 - 2
-    - item level 1 - 2 - 1
+- item 1
+  - item 1 - 1
+    - item 1 - 1 - 1
+    - item 1 - 1 - 2
+  - item 1 - 2
+    - item 1 - 2 - 1
+- item 2(no child)
+- item 3
+    - item 3 - 1(no child)
+
 </textarea></div>
         <div>
             <button id="convert" onclick="convertItemList()">Convert to Table</button>

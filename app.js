@@ -129,10 +129,32 @@ function fillChildren(cells, children) {
     }
 }
 
+
+
 function getRowspan(row, col, cells) {
     let span = 0;
     for (let i = row + 1; i < cells.length; i++) {
+        // increment while under row is empty
         if (cells[i][col]) {
+            break;
+        }
+
+        // stop increment if next row is upper level item
+        for (let j = col - 1; j >= 0; j--) {
+            if (cells[i][j]) {
+                return span + 1;
+            }
+        }
+        span++;
+    }
+
+    return span + 1;
+}
+
+function getColspan(row, col, cells) {
+    let span = 0;
+    for (let j = col + 1; j < cells[row].length; j++) {
+        if (cells[row][j]) {
             break;
         }
         span++;
@@ -162,9 +184,13 @@ function createTable(nodeList) {
     for (let i = 0; i < rowLength; i++) {
         for (let j = 0; j < columnLength; j++) {
             const rowspan = getRowspan(i, j, cells);
-            console.log(rowspan, cells[i][j]);
+            const colspan = getColspan(i, j, cells);
+            console.log(rowspan, colspan, cells[i][j]);
             if (rowspan > 1 && cells[i][j]) {
                 html += `<td rowspan="${rowspan}">${cells[i][j]}</td>`;
+            } else if (colspan > 1 && cells[i][j]) {
+                html += `<td colspan="${colspan}">${cells[i][j]}</td>`;
+                break;
             } else {
                 if (cells[i][j]) {
                     html += `<td>${cells[i][j]}</td>`;
