@@ -38,7 +38,7 @@ button {
     display: flex;
     font-size: 1.2em;
     vertical-align: middle;
-    padding: 10px;
+    padding: 16px;
     text-indent: 64px;
     text-align: left;
     background: url(./item2table.svg) left top/48px auto no-repeat;
